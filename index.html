@@ -29,6 +29,20 @@
   --font-mono:'IBM Plex Mono',monospace;
   --shadow-glow:0 0 0 1px var(--border-soft), 0 8px 24px -8px rgba(0,0,0,0.5);
 }
+:root[data-theme="light"]{
+  --bg-deep:#faf5ec;
+  --bg-panel:#ffffff;
+  --bg-elevated:#f4ead9;
+  --bg-elevated-2:#ecdec4;
+  --accent-orange:#e8631b;
+  --accent-orange-dim:#c9541a;
+  --accent-gold:#a5760a;
+  --text-primary:#241708;
+  --text-muted:#6b5a45;
+  --text-faint:#8d7a60;
+  --border-soft:rgba(36,23,8,0.12);
+  --border-strong:rgba(36,23,8,0.28);
+}
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;}
 body{
@@ -269,14 +283,41 @@ tr:hover td{background:rgba(255,122,41,0.04);}
 }
 @media (max-width:520px){
   .brand-slogan{display:none;}
-  .cart-fab span.label{display:none;}
   .stat-value{font-size:19px;}
   .product-grid{grid-template-columns:repeat(auto-fill,minmax(126px,1fr));}
+  .cart-fab{padding:9px 12px;font-size:12.5px;}
+}
+
+/* theme toggle */
+.theme-toggle{display:flex;align-items:center;gap:6px;flex:0 0 auto;}
+.theme-toggle .ico{font-size:13px;opacity:.7;}
+.theme-switch{width:44px;height:24px;border-radius:999px;background:var(--bg-elevated-2);border:1px solid var(--border-soft);position:relative;padding:0;transition:background .2s ease;flex:0 0 auto;}
+.theme-switch .theme-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:var(--accent-orange);transition:left .2s ease, background .2s ease;box-shadow:0 1px 4px rgba(0,0,0,0.3);}
+.theme-switch.is-light .theme-knob{left:22px;background:var(--accent-gold);}
+
+/* status badges */
+.status-badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.02em;white-space:nowrap;}
+.status-badge.pending{background:rgba(255,122,41,0.15);color:var(--accent-orange);border:1px solid rgba(255,122,41,0.4);}
+.status-badge.completed{background:rgba(111,191,115,0.15);color:var(--success);border:1px solid rgba(111,191,115,0.4);}
+.edit-banner{background:rgba(255,122,41,0.1);border:1px solid rgba(255,122,41,0.35);color:var(--accent-orange);border-radius:var(--radius-sm);padding:10px 14px;font-size:12.5px;font-weight:600;margin-bottom:16px;max-width:460px;margin-left:auto;margin-right:auto;text-align:center;}
+
+/* print receipt */
+.print-only{display:none;}
+@media print{
+  body > *:not(#printArea){display:none !important;}
+  #printArea{display:block !important;}
+  .receipt-print{font-family:'IBM Plex Mono',monospace;color:#000;background:#fff;max-width:320px;margin:0 auto;padding:10px;}
+  .receipt-print h2{font-family:'Rozha One',serif;text-align:center;margin:0 0 2px;font-size:20px;}
+  .receipt-print p{text-align:center;font-size:11px;margin:2px 0;}
+  .receipt-print hr{border:none;border-top:1px dashed #000;margin:8px 0;}
+  .rp-row{display:flex;justify-content:space-between;padding:3px 0;font-size:12px;}
+  .rp-total{font-weight:700;border-top:1px solid #000;margin-top:4px;padding-top:6px;}
 }
 </style>
 </head>
 <body>
 <div id="app"><div class="loader">Warming the kettle…</div></div>
+<div id="printArea" class="print-only"></div>
 
 <script>
 /* ============== DATA ============== */
@@ -336,6 +377,8 @@ const state = {
   pinMode: 'unlock', // unlock | setnew
   settingsTab: 'branding',
   editingNewProduct: false,
+  theme: 'dark',
+  editingOrderId: null,
 };
 
 /* ============== STORAGE ============== */
@@ -394,21 +437,62 @@ function esc(str){
   return String(str).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
 }
 
+function buildReceiptHTML(){
+  const s = state.settings;
+  const b = s.bank || {};
+  const totals = groupTotalsByCurrency(state.cart);
+  return `
+  <div class="receipt-print">
+    <h2>${esc(s.shopName)}</h2>
+    <p>${esc(s.slogan||'')}</p>
+    <p>${new Date().toLocaleString()}</p>
+    <hr>
+    ${state.cart.map(c=>`<div class="rp-row"><span>${esc(c.name)} x${c.qty}</span><span>${money(c.price*c.qty,c.currency)}</span></div>`).join('')}
+    <hr>
+    ${Object.entries(totals).map(([c,a])=>`<div class="rp-row rp-total"><span>Total (${c})</span><span>${money(a,c)}</span></div>`).join('')}
+    ${(b.accountName || b.accountNumber || b.upiId) ? `
+      <hr>
+      <p style="text-align:left;"><strong>Bank details</strong></p>
+      ${b.accountName?`<div class="rp-row"><span>Account name</span><span>${esc(b.accountName)}</span></div>`:''}
+      ${b.accountNumber?`<div class="rp-row"><span>Account no.</span><span>${esc(b.accountNumber)}</span></div>`:''}
+      ${b.bankName?`<div class="rp-row"><span>Bank</span><span>${esc(b.bankName)}</span></div>`:''}
+      ${b.ifsc?`<div class="rp-row"><span>IFSC</span><span>${esc(b.ifsc)}</span></div>`:''}
+      ${b.swift?`<div class="rp-row"><span>SWIFT</span><span>${esc(b.swift)}</span></div>`:''}
+      ${b.upiId?`<div class="rp-row"><span>UPI ID</span><span>${esc(b.upiId)}</span></div>`:''}
+    ` : ''}
+    <hr>
+    <p>Thank you — visit again!</p>
+  </div>`;
+}
+
 /* ============== APP ============== */
 const App = {
   async init(){
-    const [settings, products, sales] = await Promise.all([
+    const [settings, products, sales, theme] = await Promise.all([
       loadKey('settings', DEFAULT_SETTINGS),
       loadKey('products', DEFAULT_PRODUCTS),
       loadKey('sales', []),
+      loadKey('theme', 'dark'),
     ]);
     state.settings = Object.assign({}, DEFAULT_SETTINGS, settings, {bank: Object.assign({}, DEFAULT_SETTINGS.bank, settings && settings.bank)});
     state.products = products && products.length ? products : DEFAULT_PRODUCTS;
     state.sales = sales || [];
+    state.theme = theme === 'light' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', state.theme);
+    render();
+  },
+
+  toggleTheme(){
+    state.theme = state.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', state.theme);
+    saveKey('theme', state.theme);
     render();
   },
 
   go(view){
+    if((view==='dashboard' || view==='history' || view==='settings') && state.editingOrderId){
+      state.editingOrderId = null;
+    }
     state.view = view;
     state.cartOpen = false;
     render();
@@ -453,26 +537,84 @@ const App = {
 
   async confirmPayment(){
     const totals = groupTotalsByCurrency(state.cart);
-    const sale = {
-      id: 'S' + Date.now(),
-      date: new Date().toISOString(),
-      items: state.cart.map(c=>({name:c.name, qty:c.qty, price:c.price, currency:c.currency})),
-      totals,
-    };
-    state.sales = [sale, ...state.sales];
+    if(state.editingOrderId){
+      const ord = state.sales.find(s=>s.id===state.editingOrderId);
+      if(ord){
+        ord.items = state.cart.map(c=>({...c}));
+        ord.totals = totals;
+        ord.status = 'completed';
+        ord.date = new Date().toISOString();
+      }
+    } else {
+      const sale = {
+        id: 'S' + Date.now(),
+        date: new Date().toISOString(),
+        items: state.cart.map(c=>({...c})),
+        totals,
+        status: 'completed',
+      };
+      state.sales = [sale, ...state.sales];
+    }
     await saveKey('sales', state.sales);
     state.cart = [];
+    state.editingOrderId = null;
     state.view = 'success';
     render();
   },
 
+  async saveOrderHold(){
+    if(state.cart.length===0){ toast('Your cart is empty'); return; }
+    const totals = groupTotalsByCurrency(state.cart);
+    if(state.editingOrderId){
+      const ord = state.sales.find(s=>s.id===state.editingOrderId);
+      if(ord){
+        ord.items = state.cart.map(c=>({...c}));
+        ord.totals = totals;
+        ord.date = new Date().toISOString();
+      }
+    } else {
+      const order = {
+        id: 'O' + Date.now(),
+        date: new Date().toISOString(),
+        items: state.cart.map(c=>({...c})),
+        totals,
+        status: 'pending',
+      };
+      state.sales = [order, ...state.sales];
+    }
+    await saveKey('sales', state.sales);
+    state.cart = [];
+    state.editingOrderId = null;
+    toast('Order held for dine-in');
+    state.view = 'history';
+    render();
+  },
+
+  editOrder(id){
+    const ord = state.sales.find(s=>s.id===id);
+    if(!ord || ord.status==='completed'){ toast('Completed orders are locked'); return; }
+    state.cart = ord.items.map(it=>({...it}));
+    state.editingOrderId = id;
+    state.view = 'shop';
+    state.cartOpen = true;
+    toast('Editing held order — add items, then Save or checkout');
+    render();
+  },
+
+  printBill(){
+    if(state.cart.length===0){ toast('Nothing to print yet'); return; }
+    document.getElementById('printArea').innerHTML = buildReceiptHTML();
+    setTimeout(()=>window.print(), 60);
+  },
+
   downloadCSV(){
-    const rows = [['Date','Time','Items','Total']];
+    const rows = [['Date','Time','Items','Total','Status']];
     state.sales.forEach(s=>{
       const d = new Date(s.date);
       const itemsStr = s.items.map(it=>`${it.name} x${it.qty}`).join('; ');
       const totalStr = Object.entries(s.totals).map(([cur,amt])=>money(amt,cur)).join(' + ');
-      rows.push([d.toLocaleDateString(), d.toLocaleTimeString(), itemsStr, totalStr]);
+      const statusStr = s.status==='pending' ? 'Pending (Dine-In)' : 'Completed (Paid)';
+      rows.push([d.toLocaleDateString(), d.toLocaleTimeString(), itemsStr, totalStr, statusStr]);
     });
     const csv = rows.map(r=>r.map(cell=>`"${String(cell).replace(/"/g,'""')}"`).join(',')).join('\n');
     const blob = new Blob([csv], {type:'text/csv'});
@@ -618,7 +760,6 @@ function render(){
   const app = document.getElementById('app');
   app.innerHTML = `
     ${renderHeader()}
-    ${renderTabs()}
     <div class="container">
       <div class="view">${renderView()}</div>
     </div>
@@ -651,8 +792,13 @@ function renderHeader(){
           <div class="brand-slogan">${esc(s.slogan||'')}</div>
         </div>
       </div>
+      <div class="theme-toggle">
+        <span class="ico">☀️</span>
+        <button class="theme-switch ${state.theme==='light'?'is-light':''}" onclick="App.toggleTheme()" aria-label="Toggle light/dark mode"><span class="theme-knob"></span></button>
+        <span class="ico">🌙</span>
+      </div>
       <button class="cart-fab" onclick="App.toggleCart(true)">
-        🛒 <span class="label">Cart</span> ${cartCount>0?`<span class="cart-badge">${cartCount}</span>`:''}
+        Cart ${cartCount>0?`<span class="cart-badge">${cartCount}</span>`:''}
       </button>
     </div>
     ${renderTabs()}
@@ -684,8 +830,10 @@ function renderView(){
 }
 
 function renderDashboard(){
-  const today = state.sales.filter(s=>new Date(s.date).toDateString()===todayStr());
-  const month = state.sales.filter(s=>isThisMonth(s.date));
+  const completed = state.sales.filter(s=>s.status==='completed');
+  const pendingCount = state.sales.filter(s=>s.status==='pending').length;
+  const today = completed.filter(s=>new Date(s.date).toDateString()===todayStr());
+  const month = completed.filter(s=>isThisMonth(s.date));
   const todayTotals = {}; today.forEach(s=>Object.entries(s.totals).forEach(([c,a])=>todayTotals[c]=(todayTotals[c]||0)+a));
   const monthTotals = {}; month.forEach(s=>Object.entries(s.totals).forEach(([c,a])=>monthTotals[c]=(monthTotals[c]||0)+a));
   const fmtTotals = (t)=> Object.keys(t).length ? Object.entries(t).map(([c,a])=>money(a,c)).join(' + ') : money(0,'INR');
@@ -694,10 +842,10 @@ function renderDashboard(){
   <h2 class="section-title">Today's brew, at a glance</h2>
   <p class="section-sub">Live snapshot of sales for ${esc(new Date().toLocaleDateString(undefined,{weekday:'long', day:'numeric', month:'long'}))}</p>
   <div class="stat-grid">
-    <div class="card stat-card"><div class="stat-label">Today's Sales</div><div class="stat-value">${fmtTotals(todayTotals)}</div><div class="stat-sub">${today.length} order${today.length!==1?'s':''}</div></div>
-    <div class="card stat-card"><div class="stat-label">Today's Orders</div><div class="stat-value">${today.length}</div><div class="stat-sub">transactions</div></div>
-    <div class="card stat-card"><div class="stat-label">This Month's Sales</div><div class="stat-value">${fmtTotals(monthTotals)}</div><div class="stat-sub">${month.length} order${month.length!==1?'s':''}</div></div>
-    <div class="card stat-card"><div class="stat-label">Catalog Size</div><div class="stat-value">${state.products.length}</div><div class="stat-sub">items on the menu</div></div>
+    <div class="card stat-card"><div class="stat-label">Today's Sales</div><div class="stat-value">${fmtTotals(todayTotals)}</div><div class="stat-sub">${today.length} paid order${today.length!==1?'s':''}</div></div>
+    <div class="card stat-card"><div class="stat-label">Today's Orders</div><div class="stat-value">${today.length}</div><div class="stat-sub">completed transactions</div></div>
+    <div class="card stat-card"><div class="stat-label">This Month's Sales</div><div class="stat-value">${fmtTotals(monthTotals)}</div><div class="stat-sub">${month.length} paid order${month.length!==1?'s':''}</div></div>
+    <div class="card stat-card"><div class="stat-label">Open Dine-In Orders</div><div class="stat-value">${pendingCount}</div><div class="stat-sub">awaiting payment</div></div>
   </div>
 
   <div class="card recent-card">
@@ -709,7 +857,7 @@ function renderDashboard(){
       state.sales.slice(0,6).map(s=>`
         <div class="recent-row">
           <div>
-            <div>${s.items.map(i=>`${esc(i.name)} ×${i.qty}`).join(', ')}</div>
+            <div>${s.items.map(i=>`${esc(i.name)} ×${i.qty}`).join(', ')} ${s.status==='pending'?'<span class="status-badge pending" style="margin-left:6px;">Pending</span>':''}</div>
             <div class="recent-meta">${fmtDate(s.date)}</div>
           </div>
           <div class="recent-amt">${Object.entries(s.totals).map(([c,a])=>money(a,c)).join(' + ')}</div>
@@ -728,6 +876,7 @@ function renderShop(){
   return `
   <h2 class="section-title">Shop</h2>
   <p class="section-sub">Tap a dish to add it to the order.</p>
+  ${state.editingOrderId ? `<div class="edit-banner">✏️ Editing a held dine-in order — add items, then Save Order or complete payment from the cart.</div>` : ''}
   ${cats.map(cat=>`
     <div class="cat-block">
       <div class="cat-title">${esc(cat)}</div>
@@ -794,6 +943,7 @@ function renderSummary(){
   return `
   <h2 class="section-title">Order summary</h2>
   <p class="section-sub">Review everything before moving to payment.</p>
+  ${state.editingOrderId ? `<div class="edit-banner">✏️ You're editing a held dine-in order.</div>` : ''}
   <div class="receipt">
     ${state.cart.map(c=>`
       <div class="receipt-row"><span>${esc(c.name)} ×${c.qty}</span><span>${money(c.price*c.qty,c.currency)}</span></div>
@@ -801,9 +951,15 @@ function renderSummary(){
     <hr class="dotted-divider">
     ${Object.entries(totals).map(([c,a])=>`<div class="receipt-total"><span>Total (${c})</span><span>${money(a,c)}</span></div>`).join('')}
   </div>
-  <div style="max-width:460px;margin:20px auto 0;display:flex;gap:10px;">
-    <button class="btn btn-ghost btn-block" onclick="App.backTo('shop')">← Edit order</button>
-    <button class="btn btn-primary btn-block" onclick="App.proceedToPayment()">Proceed to payment →</button>
+  <div style="max-width:460px;margin:20px auto 0;">
+    <div style="display:flex;gap:10px;margin-bottom:10px;">
+      <button class="btn btn-ghost btn-block" onclick="App.backTo('shop')">← Edit order</button>
+      <button class="btn btn-ghost btn-block" onclick="App.printBill()">🖨 Print Bill Summary</button>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-ghost btn-block" onclick="App.saveOrderHold()">Save Order (Hold/Dine-In)</button>
+      <button class="btn btn-primary btn-block" onclick="App.proceedToPayment()">Proceed to payment →</button>
+    </div>
   </div>
   `;
 }
@@ -835,9 +991,14 @@ function renderPayment(){
       ${Object.entries(totals).map(([c,a])=>`<div class="bank-line"><span class="bank-label">Amount due (${c})</span><span class="bank-val" style="color:var(--accent-gold);font-weight:700;">${money(a,c)}</span></div>`).join('')}
     </div>
   </div>
-  <div style="max-width:760px;margin:20px auto 0;display:flex;gap:10px;">
-    <button class="btn btn-ghost btn-block" onclick="App.backTo('summary')">← Back to summary</button>
-    <button class="btn btn-primary btn-block" onclick="App.confirmPayment()">Confirm payment received</button>
+  <div style="max-width:760px;margin:20px auto 0;">
+    <div style="margin-bottom:10px;">
+      <button class="btn btn-ghost btn-block" onclick="App.printBill()">🖨 Print Bill Summary</button>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-ghost btn-block" onclick="App.backTo('summary')">← Back to summary</button>
+      <button class="btn btn-primary btn-block" onclick="App.confirmPayment()">Confirm payment received</button>
+    </div>
   </div>
   `;
 }
@@ -867,13 +1028,15 @@ function renderHistory(){
   ${recent.length===0 ? `<div class="empty-state"><div class="big">🧾</div>No sales logged in the past month yet.</div>` : `
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Date &amp; time</th><th>Items</th><th>Total</th></tr></thead>
+      <thead><tr><th>Date &amp; time</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr></thead>
       <tbody>
         ${recent.map(s=>`
           <tr>
             <td>${fmtDate(s.date)}</td>
             <td>${s.items.map(i=>`${esc(i.name)} ×${i.qty}`).join(', ')}</td>
             <td style="font-family:var(--font-mono);color:var(--accent-gold);">${Object.entries(s.totals).map(([c,a])=>money(a,c)).join(' + ')}</td>
+            <td>${s.status==='pending' ? `<span class="status-badge pending">Pending (Dine-In)</span>` : `<span class="status-badge completed">Completed (Paid)</span>`}</td>
+            <td>${s.status==='pending' ? `<button class="btn btn-ghost btn-sm" onclick="App.editOrder('${s.id}')">Edit Order</button>` : ''}</td>
           </tr>
         `).join('')}
       </tbody>
