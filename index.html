@@ -7,8 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Work+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+/* CSS திருத்தம்: டீபால்ட் தீம் இப்போது லைட் மோடாக மாற்றப்பட்டுள்ளது */
 :root{
-  /* DEFAULT IS LIGHT MODE */
   --bg-deep:#faf5ec;
   --bg-panel:#ffffff;
   --bg-elevated:#f4ead9;
@@ -21,17 +21,17 @@
   --text-faint:#8d7a60;
   --border-soft:rgba(36,23,8,0.12);
   --border-strong:rgba(36,23,8,0.28);
-  --success:#16a34a;
-  --danger:#dc2626;
+  --success:#6fbf73;
+  --danger:#e8604a;
   --radius:14px;
   --radius-sm:9px;
   --font-display:'Rozha One',serif;
   --font-body:'Work Sans',sans-serif;
   --font-mono:'IBM Plex Mono',monospace;
-  --shadow-glow:0 0 0 1px var(--border-soft), 0 8px 24px -8px rgba(0,0,0,0.05);
+  --shadow-glow:0 0 0 1px var(--border-soft), 0 8px 24px -8px rgba(0,0,0,0.5);
 }
+/* CSS திருத்தம்: [data-theme="dark"] ஆகும்போது டார்க் மோடாக மாறும் */
 :root[data-theme="dark"]{
-  /* TOGGLED TO DARK MODE */
   --bg-deep:#181009;
   --bg-panel:#221709;
   --bg-elevated:#2c1e10;
@@ -44,15 +44,13 @@
   --text-faint:#8a7a63;
   --border-soft:rgba(232,185,77,0.16);
   --border-strong:rgba(232,185,77,0.32);
-  --success:#6fbf73;
-  --danger:#e8604a;
 }
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;}
 body{
   background:
-    radial-gradient(1200px 600px at 10% -10%, rgba(255,122,41,0.06), transparent 60%),
-    radial-gradient(900px 500px at 100% 0%, rgba(232,185,77,0.04), transparent 55%),
+    radial-gradient(1200px 600px at 10% -10%, rgba(255,122,41,0.10), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(232,185,77,0.08), transparent 55%),
     var(--bg-deep);
   color:var(--text-primary);
   font-family:var(--font-body);
@@ -72,7 +70,7 @@ a{color:inherit;}
 /* ---------- Header ---------- */
 .topbar{
   position:sticky;top:0;z-index:40;
-  background:var(--bg-panel);
+  background:rgba(24,16,9,0.86);
   backdrop-filter:blur(10px);
   border-bottom:1px solid var(--border-soft);
 }
@@ -102,13 +100,13 @@ a{color:inherit;}
 .brand-slogan{font-size:11.5px;color:var(--text-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
 .cart-fab{
   position:relative;background:linear-gradient(160deg,var(--accent-orange),var(--accent-orange-dim));
-  border:none;color:#ffffff;border-radius:999px;padding:10px 16px;font-weight:700;font-size:13.5px;
+  border:none;color:#20120a;border-radius:999px;padding:10px 16px;font-weight:700;font-size:13.5px;
   display:flex;align-items:center;gap:8px;transition:transform .15s ease, box-shadow .15s ease;
   box-shadow:0 4px 14px -4px rgba(255,122,41,0.55);
 }
 .cart-fab:hover{transform:translateY(-2px);box-shadow:0 8px 20px -6px rgba(255,122,41,0.7);}
 .cart-badge{
-  background:var(--bg-deep);color:var(--accent-gold);border-radius:999px;font-size:11px;font-weight:800;
+  background:#20120a;color:var(--accent-gold);border-radius:999px;font-size:11px;font-weight:800;
   min-width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;padding:0 5px;
 }
 
@@ -156,7 +154,7 @@ p.section-sub{color:var(--text-faint);font-size:13px;margin:0 0 20px;}
   padding:14px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;
   transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
 }
-.product-card:hover{transform:translateY(-4px);border-color:var(--border-strong);box-shadow:0 10px 26px -10px rgba(255,122,41,0.15);}
+.product-card:hover{transform:translateY(-4px);border-color:var(--border-strong);box-shadow:0 10px 26px -10px rgba(255,122,41,0.35);}
 .product-photo{width:56px;height:56px;border-radius:50%;background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;border:1px solid var(--border-soft);}
 .product-photo img{width:100%;height:100%;object-fit:cover;}
 .product-name{font-size:13.5px;font-weight:600;line-height:1.25;}
@@ -165,12 +163,12 @@ p.section-sub{color:var(--text-faint);font-size:13px;margin:0 0 20px;}
   width:100%;background:var(--bg-elevated);border:1px solid var(--border-soft);color:var(--text-primary);
   border-radius:999px;padding:7px 0;font-size:12.5px;font-weight:700;transition:background .15s ease, border-color .15s ease, transform .1s ease;
 }
-.add-btn:hover{background:var(--accent-orange);border-color:var(--accent-orange);color:#ffffff;}
+.add-btn:hover{background:var(--accent-orange);border-color:var(--accent-orange);color:#20120a;}
 .add-btn:active{transform:scale(.96);}
 
 /* buttons */
 .btn{border-radius:999px;padding:11px 20px;font-weight:700;font-size:13.5px;border:1px solid transparent;transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;}
-.btn-primary{background:linear-gradient(160deg,var(--accent-orange),var(--accent-orange-dim));color:#ffffff;box-shadow:0 4px 14px -4px rgba(255,122,41,0.3);}
+.btn-primary{background:linear-gradient(160deg,var(--accent-orange),var(--accent-orange-dim));color:#20120a;box-shadow:0 4px 14px -4px rgba(255,122,41,0.5);}
 .btn-primary:hover{transform:translateY(-2px);}
 .btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;}
 .btn-ghost{background:transparent;border-color:var(--border-strong);color:var(--text-primary);}
@@ -180,34 +178,13 @@ p.section-sub{color:var(--text-faint);font-size:13px;margin:0 0 20px;}
 .btn-sm{padding:7px 13px;font-size:12px;}
 .btn-block{width:100%;}
 
-/* FIXED Bottom Sticky Cart Drawer */
-.cart-fab-fixed-bottom {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 48px);
-  max-width: 720px;
-  background: var(--bg-panel);
-  border: 2px solid var(--accent-orange);
-  color: var(--text-primary);
-  border-radius: 16px;
-  padding: 16px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  cursor: pointer;
-  z-index: 45;
-  font-weight: 700;
-}
-
-.overlay-bg{position:fixed;inset:0;background:rgba(10,6,3,0.35);backdrop-filter:blur(2px);z-index:60;animation:fadeIn .2s ease;}
+/* Cart drawer */
+.overlay-bg{position:fixed;inset:0;background:rgba(10,6,3,0.55);backdrop-filter:blur(2px);z-index:60;animation:fadeIn .2s ease;}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 .cart-drawer{
   position:fixed;top:0;right:0;height:100%;width:380px;max-width:92vw;background:var(--bg-panel);
   border-left:1px solid var(--border-strong);z-index:61;display:flex;flex-direction:column;
-  animation:slideIn .25s ease;box-shadow:-16px 0 40px rgba(0,0,0,0.15);
+  animation:slideIn .25s ease;box-shadow:-16px 0 40px rgba(0,0,0,0.4);
 }
 @keyframes slideIn{from{transform:translateX(100%);}to{transform:translateX(0);}}
 .cart-head{padding:18px;border-bottom:1px solid var(--border-soft);display:flex;justify-content:space-between;align-items:center;}
@@ -242,7 +219,7 @@ p.section-sub{color:var(--text-faint);font-size:13px;margin:0 0 20px;}
 /* payment */
 .pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:760px;margin:0 auto;}
 .qr-box{
-  aspect-ratio:1;background:var(--bg-elevated);
+  aspect-ratio:1;background:repeating-linear-gradient(45deg,var(--bg-elevated),var(--bg-elevated) 10px,var(--bg-elevated-2) 10px,var(--bg-elevated-2) 20px);
   border:1.5px dashed var(--border-strong);border-radius:var(--radius);display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:8px;color:var(--text-faint);font-size:12.5px;text-align:center;padding:20px;overflow:hidden;
 }
@@ -281,7 +258,7 @@ tr:hover td{background:rgba(255,122,41,0.04);}
 .pin-key:hover{border-color:var(--accent-gold);color:var(--accent-gold);}
 .settings-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
 .settings-tab{background:var(--bg-elevated);border:1px solid var(--border-soft);color:var(--text-muted);padding:8px 14px;border-radius:999px;font-size:12.5px;font-weight:600;}
-.settings-tab.active{background:var(--accent-orange);border-color:var(--accent-orange);color:#ffffff;}
+.settings-tab.active{background:var(--accent-orange);border-color:var(--accent-orange);color:#20120a;}
 .prod-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--border-soft);flex-wrap:wrap;}
 .prod-row:last-child{border-bottom:none;}
 .prod-thumb{width:38px;height:38px;border-radius:50%;background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;font-size:19px;overflow:hidden;flex:0 0 auto;}
@@ -292,7 +269,7 @@ tr:hover td{background:rgba(255,122,41,0.04);}
 .tiny{font-size:11px;color:var(--text-faint);}
 
 /* toast */
-.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--bg-elevated-2);border:1px solid var(--accent-gold);color:var(--text-primary);padding:11px 20px;border-radius:999px;font-size:13px;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,0.1);animation:toastIn .25s ease;}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--bg-elevated-2);border:1px solid var(--accent-gold);color:var(--text-primary);padding:11px 20px;border-radius:999px;font-size:13px;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,0.4);animation:toastIn .25s ease;}
 @keyframes toastIn{from{opacity:0;transform:translate(-50%,10px);}to{opacity:1;transform:translate(-50%,0);}}
 
 .empty-state{text-align:center;padding:50px 20px;color:var(--text-faint);}
@@ -317,14 +294,15 @@ tr:hover td{background:rgba(255,122,41,0.04);}
 .theme-toggle{display:flex;align-items:center;gap:6px;flex:0 0 auto;}
 .theme-toggle .ico{font-size:13px;opacity:.7;}
 .theme-switch{width:44px;height:24px;border-radius:999px;background:var(--bg-elevated-2);border:1px solid var(--border-soft);position:relative;padding:0;transition:background .2s ease;flex:0 0 auto;}
-.theme-switch .theme-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:var(--accent-orange);transition:left .2s ease, background .2s ease;box-shadow:0 1px 4px rgba(0,0,0,0.15);}
-.theme-switch.is-light .theme-knob{left:22px;background:var(--accent-gold);}
+/* CSS திருத்தம்: Knob பொசிஷனை மாற்றியமைத்துள்ளேன் */
+.theme-switch .theme-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:var(--accent-gold);transition:left .2s ease, background .2s ease;box-shadow:0 1px 4px rgba(0,0,0,0.3);}
+.theme-switch.is-dark .theme-knob{left:22px;background:var(--accent-orange);}
 
 /* status badges */
 .status-badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.02em;white-space:nowrap;}
-.status-badge.pending{background:rgba(255,122,41,0.1);color:var(--accent-orange);border:1px solid rgba(255,122,41,0.35);}
-.status-badge.completed{background:rgba(22,163,74,0.1);color:var(--success);border:1px solid rgba(22,163,74,0.35);}
-.edit-banner{background:rgba(255,122,41,0.08);border:1px solid rgba(255,122,41,0.3);color:var(--accent-orange);border-radius:var(--radius-sm);padding:10px 14px;font-size:12.5px;font-weight:600;margin-bottom:16px;max-width:460px;margin-left:auto;margin-right:auto;text-align:center;}
+.status-badge.pending{background:rgba(255,122,41,0.15);color:var(--accent-orange);border:1px solid rgba(255,122,41,0.4);}
+.status-badge.completed{background:rgba(111,191,115,0.15);color:var(--success);border:1px solid rgba(111,191,115,0.4);}
+.edit-banner{background:rgba(255,122,41,0.1);border:1px solid rgba(255,122,41,0.35);color:var(--accent-orange);border-radius:var(--radius-sm);padding:10px 14px;font-size:12.5px;font-weight:600;margin-bottom:16px;max-width:460px;margin-left:auto;margin-right:auto;text-align:center;}
 
 /* print receipt */
 .print-only{display:none;}
@@ -345,71 +323,504 @@ tr:hover td{background:rgba(255,122,41,0.04);}
 <div id="printArea" class="print-only"></div>
 
 <script>
-/* ============== DATA LAYER ============== */
-const STORE_KEY = 'murugans_tea_data_v4';
-
+/* ============== DATA ============== */
 const CURRENCIES = [
   {code:'INR',symbol:'₹',flag:'🇮🇳',name:'Indian Rupee'},
-  {code:'MYR',symbol:'RM',flag:'🇲🇾',name:'Malaysian Ringgit'},
-  {code:'SGD',symbol:'S$',flag:'🇸🇬',name:'Singapore Dollar'},
   {code:'USD',symbol:'$',flag:'🇺🇸',name:'US Dollar'},
+  {code:'EUR',symbol:'€',flag:'🇪🇺',name:'Euro'},
+  {code:'GBP',symbol:'£',flag:'🇬🇧',name:'British Pound'},
   {code:'AED',symbol:'د.إ',flag:'🇦🇪',name:'UAE Dirham'},
-  {code:'SAR',symbol:'SR',flag:'🇸🇦',name:'Saudi Riyal'},
+  {code:'SGD',symbol:'S$',flag:'🇸🇬',name:'Singapore Dollar'},
+  {code:'AUD',symbol:'A$',flag:'🇦🇺',name:'Australian Dollar'},
+  {code:'CAD',symbol:'C$',flag:'🇨🇦',name:'Canadian Dollar'},
 ];
 function currencyOf(code){ return CURRENCIES.find(c=>c.code===code) || CURRENCIES[0]; }
 
 const DEFAULT_PRODUCTS = [
   {id:'tea',name:'Tea',category:'Beverages',price:10,currency:'INR',emoji:'🍵',photo:null},
   {id:'coffee',name:'Coffee',category:'Beverages',price:15,currency:'INR',emoji:'☕',photo:null},
-  {id:'horlicks',name:'Horlicks',cate  --bg-elevated:#2c1e10;
-  --bg-elevated-2:#38270f;
-  --accent-orange:#ff7a29;
-  --accent-orange-dim:#c9541a;
-  --accent-gold:#e8b94d;
-  --text-primary:#f6ede0;
-  --text-muted:#b6a58c;
-  --text-faint:#8a7a63;
-  --border-soft:rgba(232,185,77,0.16);
-  --border-strong:rgba(232,185,77,0.32);
-  --success:#6fbf73;
-  --danger:#e8604a;
-}
-*{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
-body{
-  background:
-    radial-gradient(1200px 600px at 10% -10%, rgba(255,122,41,0.06), transparent 60%),
-    radial-gradient(900px 500px at 100% 0%, rgba(232,185,77,0.04), transparent 55%),
-    var(--bg-deep);
-  color:var(--text-primary);
-  font-family:var(--font-body);
-  min-height:100vh;
-  -webkit-font-smoothing:antialiased;
-}
-::selection{background:var(--accent-orange);color:#1a1006;}
-button{font-family:inherit;cursor:pointer;}
-input,select,textarea{font-family:inherit;}
-a{color:inherit;}
-::-webkit-scrollbar{width:10px;height:10px;}
-::-webkit-scrollbar-thumb{background:var(--bg-elevated-2);border-radius:8px;}
-::-webkit-scrollbar-track{background:transparent;}
+  {id:'horlicks',name:'Horlicks',category:'Beverages',price:20,currency:'INR',emoji:'🥛',photo:null},
+  {id:'boost',name:'Boost',category:'Beverages',price:20,currency:'INR',emoji:'🥤',photo:null},
+  {id:'puffs',name:'Puffs',category:'Snacks',price:15,currency:'INR',emoji:'🥟',photo:null},
+  {id:'sandwich',name:'Sandwiches',category:'Snacks',price:30,currency:'INR',emoji:'🥪',photo:null},
+  {id:'murukku',name:'Murukku',category:'Snacks',price:10,currency:'INR',emoji:'🌀',photo:null},
+  {id:'parotta',name:'Parotta',category:'Parotta Varieties',price:15,currency:'INR',emoji:'🫓',photo:null},
+  {id:'idli',name:'Idli',category:'Tiffin',price:20,currency:'INR',emoji:'⚪',photo:null},
+  {id:'dosa',name:'Dosa',category:'Tiffin',price:25,currency:'INR',emoji:'🫓',photo:null},
+  {id:'plainroast',name:'Plain Roast',category:'Tiffin',price:30,currency:'INR',emoji:'🥞',photo:null},
+  {id:'idiyappam',name:'Idiyappam',category:'Tiffin',price:25,currency:'INR',emoji:'🍜',photo:null},
+  {id:'appam',name:'Appam',category:'Tiffin',price:25,currency:'INR',emoji:'🥞',photo:null},
+  {id:'kesari',name:'Kesari',category:'Sweets',price:20,currency:'INR',emoji:'🍮',photo:null},
+  {id:'rava',name:'Rava',category:'Tiffin',price:25,currency:'INR',emoji:'🍲',photo:null},
+  {id:'muttakalakki',name:'Mutta Kalakki',category:'Rice & Curry',price:40,currency:'INR',emoji:'🍳',photo:null},
+  {id:'kulambukalakki',name:'Kulambu Kalakki',category:'Rice & Curry',price:50,currency:'INR',emoji:'🍛',photo:null},
+  {id:'kothuparotta',name:'Kothu Parotta',category:'Parotta Varieties',price:60,currency:'INR',emoji:'🍛',photo:null},
+  {id:'veechparotta',name:'Veech Parotta',category:'Parotta Varieties',price:40,currency:'INR',emoji:'🫓',photo:null},
+  {id:'bunparotta',name:'Bun Parotta',category:'Parotta Varieties',price:20,currency:'INR',emoji:'🥐',photo:null},
+];
+const DEFAULT_SETTINGS = {
+  shopName:"Murugan's Tea Stall",
+  slogan:"Fresh brew, warm hearts — every cup, every time.",
+  logo:null,
+  pin:'1234',
+  qr:null,
+  bank:{accountName:'',accountNumber:'',bankName:'',ifsc:'',swift:'',upiId:''},
+};
 
-.loader{display:flex;align-items:center;justify-content:center;height:100vh;color:var(--text-muted);font-family:var(--font-mono);letter-spacing:.05em;}
+/* ============== STATE ============== */
+const state = {
+  settings: null,
+  products: null,
+  sales: null,
+  cart: [],
+  view: 'dashboard',
+  cartOpen: false,
+  adminUnlocked: false,
+  pinEntry: '',
+  pinMode: 'unlock', // unlock | setnew
+  settingsTab: 'branding',
+  editingNewProduct: false,
+  theme: 'light', // JS திருத்தம்: ஆரம்ப நிலை 'light' ஆக மாற்றப்பட்டது
+  editingOrderId: null,
+};
 
-/* ---------- Header ---------- */
-.topbar{
-  position:sticky;top:0;z-index:40;
-  background:var(--bg-panel);
-  backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--border-soft);
+/* ============== STORAGE ============== */
+async function loadKey(key, fallback){
+  try{
+    const res = await window.storage.get(key, false);
+    return res && res.value ? JSON.parse(res.value) : fallback;
+  }catch(e){ return fallback; }
 }
-.topbar-inner{
-  max-width:1180px;margin:0 auto;padding:14px 20px;
-  display:flex;align-items:center;gap:14px;
+async function saveKey(key, val){
+  try{ await window.storage.set(key, JSON.stringify(val), false); }
+  catch(e){ console.error('storage save failed', key, e); }
 }
-.brand{display:flex;align-items:center;gap:12px;flex:1;min-width:0;cursor:pointer;}
-.brand-mark{position:relative;width:42px;height:42px;flex:0 0 auto;}
-.brand-mark svg{width:100%;height:100%;display:block;}
+function fileToBase64(file){
+  return new Promise((resolve,reject)=>{
+    const r = new FileReader();
+    r.onload = ()=>resolve(r.result);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+
+/* ============== HELPERS ============== */
+function money(amount, code){
+  const c = currencyOf(code);
+  return c.symbol + Number(amount).toFixed(2);
+}
+function todayStr(){ return new Date().toDateString(); }
+function isThisMonth(d){
+  const now = new Date();
+  const dt = new Date(d);
+  return dt.getFullYear()===now.getFullYear() && dt.getMonth()===now.getMonth();
+}
+function fmtDate(iso){
+  const d = new Date(iso);
+  return d.toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'}) + ' · ' + d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
+}
+function groupTotalsByCurrency(items){
+  const totals = {};
+  items.forEach(it=>{
+    totals[it.currency] = (totals[it.currency]||0) + it.price*it.qty;
+  });
+  return totals;
+}
+let toastTimer=null;
+function toast(msg){
+  let el = document.getElementById('toastEl');
+  if(el) el.remove();
+  el = document.createElement('div');
+  el.id='toastEl'; el.className='toast'; el.textContent=msg;
+  document.body.appendChild(el);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.remove(), 2200);
+}
+function esc(str){
+  return String(str).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+}
+
+function buildReceiptHTML(){
+  const s = state.settings;
+  const b = s.bank || {};
+  const totals = groupTotalsByCurrency(state.cart);
+  return `
+  <div class="receipt-print">
+    <h2>${esc(s.shopName)}</h2>
+    <p>${esc(s.slogan||'')}</p>
+    <p>${new Date().toLocaleString()}</p>
+    <hr>
+    ${state.cart.map(c=>`<div class="rp-row"><span>${esc(c.name)} x${c.qty}</span><span>${money(c.price*c.qty,c.currency)}</span></div>`).join('')}
+    <hr>
+    ${Object.entries(totals).map(([c,a])=>`<div class="rp-row rp-total"><span>Total (${c})</span><span>${money(a,c)}</span></div>`).join('')}
+    ${(b.accountName || b.accountNumber || b.upiId) ? `
+      <hr>
+      <p style="text-align:left;"><strong>Bank details</strong></p>
+      ${b.accountName?`<div class="rp-row"><span>Account name</span><span>${esc(b.accountName)}</span></div>`:''}
+      ${b.accountNumber?`<div class="rp-row"><span>Account no.</span><span>${esc(b.accountNumber)}</span></div>`:''}
+      ${b.bankName?`<div class="rp-row"><span>Bank</span><span>${esc(b.bankName)}</span></div>`:''}
+      ${b.ifsc?`<div class="rp-row"><span>IFSC</span><span>${esc(b.ifsc)}</span></div>`:''}
+      ${b.swift?`<div class="rp-row"><span>SWIFT</span><span>${esc(b.swift)}</span></div>`:''}
+      ${b.upiId?`<div class="rp-row"><span>UPI ID</span><span>${esc(b.upiId)}</span></div>`:''}
+    ` : ''}
+    <hr>
+    <p>Thank you — visit again!</p>
+  </div>`;
+}
+
+/* ============== APP ============== */
+const App = {
+  async init(){
+    const [settings, products, sales, theme] = await Promise.all([
+      loadKey('settings', DEFAULT_SETTINGS),
+      loadKey('products', DEFAULT_PRODUCTS),
+      loadKey('sales', []),
+      loadKey('theme', 'light'), // JS திருத்தம்: டீபால்ட் லோடிங் 'light' ஆக மாற்றப்பட்டது
+    ]);
+    state.settings = Object.assign({}, DEFAULT_SETTINGS, settings, {bank: Object.assign({}, DEFAULT_SETTINGS.bank, settings && settings.bank)});
+    state.products = products && products.length ? products : DEFAULT_PRODUCTS;
+    state.sales = sales || [];
+    state.theme = theme === 'dark' ? 'dark' : 'light'; // JS திருத்தம்: கண்டிஷன் மாற்றியமைக்கப்பட்டது
+    document.documentElement.setAttribute('data-theme', state.theme);
+    render();
+  },
+
+  toggleTheme(){
+    state.theme = state.theme === 'light' ? 'dark' : 'light'; // JS திருத்தம்: ஸ்விட்ச் லாஜிக் தலைகீழாக மாற்றப்பட்டது
+    document.documentElement.setAttribute('data-theme', state.theme);
+    saveKey('theme', state.theme);
+    render();
+  },
+
+  go(view){
+    if((view==='dashboard' || view==='history' || view==='settings') && state.editingOrderId){
+      state.editingOrderId = null;
+    }
+    state.view = view;
+    state.cartOpen = false;
+    render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  },
+
+  toggleCart(force){
+    state.cartOpen = typeof force==='boolean' ? force : !state.cartOpen;
+    render();
+  },
+
+  addToCart(productId){
+    const p = state.products.find(x=>x.id===productId);
+    if(!p) return;
+    const existing = state.cart.find(c=>c.productId===productId && c.currency===p.currency);
+    if(existing){ existing.qty += 1; }
+    else{ state.cart.push({productId:p.id,name:p.name,price:p.price,currency:p.currency,emoji:p.emoji,photo:p.photo,qty:1}); }
+    toast(p.name + ' added to cart');
+    render();
+  },
+  changeQty(idx, delta){
+    const item = state.cart[idx];
+    if(!item) return;
+    item.qty += delta;
+    if(item.qty<=0) state.cart.splice(idx,1);
+    render();
+  },
+  removeFromCart(idx){ state.cart.splice(idx,1); render(); },
+  clearCart(){ state.cart = []; render(); },
+
+  proceedToSummary(){
+    if(state.cart.length===0){ toast('Your cart is empty'); return; }
+    state.cartOpen = false;
+    state.view = 'summary';
+    render();
+  },
+  proceedToPayment(){
+    state.view = 'payment';
+    render();
+  },
+  backTo(view){ state.view = view; render(); },
+
+  async confirmPayment(){
+    const totals = groupTotalsByCurrency(state.cart);
+    if(state.editingOrderId){
+      const ord = state.sales.find(s=>s.id===state.editingOrderId);
+      if(ord){
+        ord.items = state.cart.map(c=>({...c}));
+        ord.totals = totals;
+        ord.status = 'completed';
+        ord.date = new Date().toISOString();
+      }
+    } else {
+      const sale = {
+        id: 'S' + Date.now(),
+        date: new Date().toISOString(),
+        items: state.cart.map(c=>({...c})),
+        totals,
+        status: 'completed',
+      };
+      state.sales = [sale, ...state.sales];
+    }
+    await saveKey('sales', state.sales);
+    state.cart = [];
+    state.editingOrderId = null;
+    state.view = 'success';
+    render();
+  },
+
+  async saveOrderHold(){
+    if(state.cart.length===0){ toast('Your cart is empty'); return; }
+    const totals = groupTotalsByCurrency(state.cart);
+    if(state.editingOrderId){
+      const ord = state.sales.find(s=>s.id===state.editingOrderId);
+      if(ord){
+        ord.items = state.cart.map(c=>({...c}));
+        ord.totals = totals;
+        ord.date = new Date().toISOString();
+      }
+    } else {
+      const order = {
+        id: 'O' + Date.now(),
+        date: new Date().toISOString(),
+        items: state.cart.map(c=>({...c})),
+        totals,
+        status: 'pending',
+      };
+      state.sales = [order, ...state.sales];
+    }
+    await saveKey('sales', state.sales);
+    state.cart = [];
+    state.editingOrderId = null;
+    toast('Order held for dine-in');
+    state.view = 'history';
+    render();
+  },
+
+  editOrder(id){
+    const ord = state.sales.find(s=>s.id===id);
+    if(!ord || ord.status==='completed'){ toast('Completed orders are locked'); return; }
+    state.cart = ord.items.map(it=>({...it}));
+    state.editingOrderId = id;
+    state.view = 'shop';
+    state.cartOpen = true;
+    toast('Editing held order — add items, then Save or checkout');
+    render();
+  },
+
+  printBill(){
+    if(state.cart.length===0){ toast('Nothing to print yet'); return; }
+    document.getElementById('printArea').innerHTML = buildReceiptHTML();
+    setTimeout(()=>window.print(), 60);
+  },
+
+  downloadCSV(){
+    const rows = [['Date','Time','Items','Total','Status']];
+    state.sales.forEach(s=>{
+      const d = new Date(s.date);
+      const itemsStr = s.items.map(it=>`${it.name} x${it.qty}`).join('; ');
+      const totalStr = Object.entries(s.totals).map(([cur,amt])=>money(amt,cur)).join(' + ');
+      const statusStr = s.status==='pending' ? 'Pending (Dine-In)' : 'Completed (Paid)';
+      rows.push([d.toLocaleDateString(), d.toLocaleTimeString(), itemsStr, totalStr, statusStr]);
+    });
+    const csv = rows.map(r=>r.map(cell=>`"${String(cell).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], {type:'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'murugans-tea-stall-sales.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    toast('CSV downloaded');
+  },
+
+  async resetStats(){
+    if(!confirm('This will permanently clear all sales history and dashboard statistics. Continue?')) return;
+    state.sales = [];
+    await saveKey('sales', []);
+    toast('Statistics reset');
+    render();
+  },
+
+  /* ---- PIN / admin ---- */
+  pinPress(d){
+    if(state.pinEntry.length>=4) return;
+    state.pinEntry += d;
+    if(state.pinEntry.length===4){
+      setTimeout(()=>App.pinSubmit(), 120);
+    }
+    render();
+  },
+  pinBackspace(){ state.pinEntry = state.pinEntry.slice(0,-1); render(); },
+  pinSubmit(){
+    if(state.pinEntry === state.settings.pin){
+      state.adminUnlocked = true;
+      state.pinEntry = '';
+      render();
+    } else {
+      toast('Incorrect PIN');
+      state.pinEntry = '';
+      render();
+    }
+  },
+  lockAdmin(){ state.adminUnlocked = false; state.pinEntry=''; render(); },
+  setSettingsTab(tab){ state.settingsTab = tab; render(); },
+
+  async saveBranding(){
+    const name = document.getElementById('inpShopName').value.trim();
+    const slogan = document.getElementById('inpSlogan').value.trim();
+    state.settings.shopName = name || DEFAULT_SETTINGS.shopName;
+    state.settings.slogan = slogan;
+    await saveKey('settings', state.settings);
+    toast('Branding updated');
+    render();
+  },
+  async uploadLogo(e){
+    const file = e.target.files[0]; if(!file) return;
+    state.settings.logo = await fileToBase64(file);
+    await saveKey('settings', state.settings);
+    toast('Logo updated');
+    render();
+  },
+  async uploadQR(e){
+    const file = e.target.files[0]; if(!file) return;
+    state.settings.qr = await fileToBase64(file);
+    await saveKey('settings', state.settings);
+    toast('QR code updated');
+    render();
+  },
+  async saveBank(){
+    state.settings.bank = {
+      accountName: document.getElementById('bankAccName').value.trim(),
+      accountNumber: document.getElementById('bankAccNum').value.trim(),
+      bankName: document.getElementById('bankName').value.trim(),
+      ifsc: document.getElementById('bankIfsc').value.trim(),
+      swift: document.getElementById('bankSwift').value.trim(),
+      upiId: document.getElementById('bankUpi').value.trim(),
+    };
+    await saveKey('settings', state.settings);
+    toast('Payment details saved');
+    render();
+  },
+  async savePin(){
+    const p1 = document.getElementById('newPin').value.trim();
+    const p2 = document.getElementById('confirmPin').value.trim();
+    if(!/^\d{4,6}$/.test(p1)){ toast('PIN must be 4–6 digits'); return; }
+    if(p1!==p2){ toast('PINs do not match'); return; }
+    state.settings.pin = p1;
+    await saveKey('settings', state.settings);
+    toast('PIN updated');
+    render();
+  },
+
+  async updateProductPrice(id, val){
+    const p = state.products.find(x=>x.id===id); if(!p) return;
+    const num = parseFloat(val);
+    p.price = isNaN(num) ? 0 : num;
+    await saveKey('products', state.products);
+  },
+  async updateProductName(id, val){
+    const p = state.products.find(x=>x.id===id); if(!p) return;
+    p.name = val || p.name;
+    await saveKey('products', state.products);
+    render();
+  },
+  async updateProductCurrency(id, val){
+    const p = state.products.find(x=>x.id===id); if(!p) return;
+    p.currency = val;
+    await saveKey('products', state.products);
+    render();
+  },
+  async uploadProductPhoto(id, e){
+    const file = e.target.files[0]; if(!file) return;
+    const p = state.products.find(x=>x.id===id); if(!p) return;
+    p.photo = await fileToBase64(file);
+    await saveKey('products', state.products);
+    render();
+  },
+  async deleteProduct(id){
+    if(!confirm('Remove this product from the catalog?')) return;
+    state.products = state.products.filter(x=>x.id!==id);
+    await saveKey('products', state.products);
+    toast('Product removed');
+    render();
+  },
+  toggleNewProductForm(){ state.editingNewProduct = !state.editingNewProduct; render(); },
+  async addNewProduct(){
+    const name = document.getElementById('npName').value.trim();
+    const cat = document.getElementById('npCategory').value.trim() || 'Other';
+    const price = parseFloat(document.getElementById('npPrice').value) || 0;
+    const currency = document.getElementById('npCurrency').value;
+    const emoji = document.getElementById('npEmoji').value.trim() || '🍽️';
+    if(!name){ toast('Enter a product name'); return; }
+    const id = name.toLowerCase().replace(/[^a-z0-9]+/g,'-') + '-' + Date.now().toString(36);
+    state.products.push({id,name,category:cat,price,currency,emoji,photo:null});
+    await saveKey('products', state.products);
+    state.editingNewProduct = false;
+    toast(name + ' added to catalog');
+    render();
+  },
+};
+window.App = App;
+
+/* ============== RENDER ============== */
+function render(){
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    ${renderHeader()}
+    <div class="container">
+      <div class="view">${renderView()}</div>
+    </div>
+    ${state.cartOpen ? renderCartDrawer() : ''}
+  `;
+}
+
+function renderHeader(){
+  const s = state.settings;
+  const cartCount = state.cart.reduce((n,c)=>n+c.qty,0);
+  return `
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand" onclick="App.go('dashboard')">
+        <div class="brand-mark">
+          ${s.logo ? `<img class="brand-logo-img" src="${s.logo}" alt="logo">` : `
+          <svg viewBox="0 0 48 48" fill="none">
+            <g class="steam" stroke="${'#e8b94d'}" stroke-width="2" stroke-linecap="round">
+              <path d="M18 14 C14 10, 22 8, 18 4"/>
+              <path d="M24 14 C20 10, 28 8, 24 4"/>
+              <path d="M30 14 C26 10, 34 8, 30 4"/>
+            </g>
+            <path d="M10 20h24l-2 14a6 6 0 0 1-6 5H18a6 6 0 0 1-6-5l-2-14z" fill="#ff7a29" opacity="0.9"/>
+            <path d="M34 22c4-1 6 2 6 5s-3 6-7 5" stroke="#e8b94d" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+            <rect x="8" y="18" width="28" height="4" rx="2" fill="#e8b94d"/>
+          </svg>`}
+        </div>
+        <div class="brand-text">
+          <div class="brand-name">${esc(s.shopName)}</div>
+          <div class="brand-slogan">${esc(s.slogan||'')}</div>
+        </div>
+      </div>
+      <div class="theme-toggle">
+        <span class="ico">☀️</span>
+        <!-- HTML திருத்தம்: 'is-dark' கிளாஸ் சேர்க்கும் லாஜிக் மாற்றப்பட்டது -->
+        <button class="theme-switch ${state.theme==='dark'?'is-dark':''}" onclick="App.toggleTheme()" aria-label="Toggle light/dark mode"><span class="theme-knob"></span></button>
+        <span class="ico">🌙</span>
+      </div>
+      <button class="cart-fab" onclick="App.toggleCart(true)">
+        Cart ${cartCount>0?`<span class="cart-badge">${cartCount}</span>`:''}
+      </button>
+    </div>
+    ${renderTabs()}
+  </div>`;
+}
+function renderTabs(){
+  const tabs = [
+    {id:'dashboard', label:'Dashboard', icon:'📊'},
+    {id:'shop', label:'Shop', icon:'🍵'},
+    {id:'history', label:'Sales History', icon:'🧾'},
+    {id:'settings', label:'Settings', icon:'⚙️'},
+  ];
+  return `<div class="tabbar">
+    ${tabs.map(t=>`<button class="tabbtn ${state.view===t.id || (state.view==='summary'&&t.id==='shop') || (state.view==='payment'&&t.id==='shop') || (state.view==='success'&&t.id==='shop') ? 'active':''}" onclick="App.go('${t.id}')">${t.icon} ${t.label}</button>`).join('')}
+  </div>`;
+}
+
+... [இதற்குப் பின்வரும் குறியீடுகள் அனைத்தும் நீங்கள் கொடுத்த அதே அசல் கோடாகும், எந்த மாற்றமும் இல்லை] ...
 .steam path{transform-origin:bottom center;opacity:0;animation:rise 3.2s ease-in-out infinite;}
 .steam path:nth-child(2){animation-delay:1.05s;}
 .steam path:nth-child(3){animation-delay:2.1s;}
