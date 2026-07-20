@@ -3,10 +3,10 @@ Order and Billing POS for Hotel, Bakeries...
 
 customizable web-based Point of Sale (POS) billing system built for tea stalls, cafes, tiffin centers, and small restaurants.
 
-📌 Overview
+# 📌 Overview
 Hotel POS is a single-page web application designed to simplify daily order processing, table management, bill printing, and sales tracking. Built with zero external framework dependencies, it runs entirely inside the browser using modern standard web APIs and standard HTML/CSS/JavaScript.
 
-✨ Key Features
+# ✨ Key Features
 📱 Responsive & Intuitive Interface
 
 Clean UI optimized for both desktop browsers and mobile/tablet devices.  
